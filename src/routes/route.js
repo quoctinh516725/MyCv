@@ -12,6 +12,10 @@ const routes = [
     element: Home,
   },
   {
+    path: "/MyCv",
+    element: Home,
+  },
+  {
     path: "/about",
     element: About,
   },
