@@ -4,6 +4,7 @@ import PageTransition from "../components/PageTransition";
 
 const Skill = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [hoveredSkillIndex, setHoveredSkillIndex] = useState(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -13,12 +14,42 @@ const Skill = () => {
     return () => clearTimeout(timer);
   }, []);
   const technicalSkills = [
-    { name: "JavaScript", point: 80, icon: "fa-brands fa-js" },
-    { name: "TypeScript", point: 80, icon: "fa-solid fa-code" },
-    { name: "Java", point: 70, icon: "fa-brands fa-java" },
-    { name: "C++", point: 70, icon: "fa-solid fa-laptop-code" },
-    { name: "PHP", point: 80, icon: "fa-brands fa-php" },
-    { name: "Python", point: 80, icon: "fa-brands fa-python" },
+    {
+      name: "JavaScript",
+      point: 80,
+      icon: "fa-brands fa-js",
+      library: "jQuery, React",
+      pointLi: 70,
+    },
+    {
+      name: "TypeScript",
+      point: 80,
+      icon: "fa-solid fa-code",
+      library: "Type Safety in React",
+      pointLi: 80,
+    },
+    {
+      name: "Java",
+      point: 70,
+      icon: "fa-brands fa-java",
+      library: "Spring Boot",
+      pointLi: 70,
+    },
+    {
+      name: "C++",
+      point: 70,
+      icon: "fa-solid fa-laptop-code",
+      library: "STL, Qt",
+      pointLi: 50,
+    },
+    { name: "PHP", point: 80, icon: "fa-brands fa-php", library: "Laravel" },
+    {
+      name: "Python",
+      point: 80,
+      icon: "fa-brands fa-python",
+      library: "Django, Flask",
+      pointLi: 80,
+    },
   ];
 
   const softSkills = [
@@ -53,8 +84,36 @@ const Skill = () => {
             {technicalSkills.map((skill, index) => (
               <div
                 key={index}
-                className="flex flex-col items-center justify-between gap-4"
+                className="relative flex flex-col items-center justify-between gap-4 group"
+                onMouseEnter={() => setHoveredSkillIndex(index)}
+                onMouseLeave={() => setHoveredSkillIndex(null)}
               >
+                {/* Tooltip absolute */}
+                {hoveredSkillIndex === index && (
+                  <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-[#1f2937] text-gray-100 text-xs px-3 py-1 rounded-md shadow-lg z-10">
+                    <p className="text-sm text-gray-300 flex items-center justify-between gap-2 w-full ">
+                      <div className="flex gap-2 items-center">
+                        <i className={`${skill.icon} text-[#00A3E1]`} />
+                        <p>{skill.library}</p>
+                      </div>
+                      <span className="text-sm text-gray-300 min-w-10">
+                        {skill.pointLi}%
+                      </span>
+                    </p>
+
+                    {/* Progress bar */}
+                    <div className="w-full h-2 bg-gray-300 rounded-full overflow-hidden">
+                      <div
+                        className="h-2 bg-[#00A3E1] rounded-full transition-all duration-1000 ease-out"
+                        style={{
+                          width: isVisible ? `${skill.pointLi}%` : "0%",
+                        }}
+                      ></div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Tên + phần trăm */}
                 <p className="text-sm text-gray-300 flex items-center justify-between gap-2 w-full ">
                   <div className="flex gap-2 items-center">
                     <i className={`${skill.icon} text-[#00A3E1]`} />
@@ -65,6 +124,7 @@ const Skill = () => {
                   </span>
                 </p>
 
+                {/* Progress bar */}
                 <div className="w-full h-2 bg-gray-300 rounded-full overflow-hidden">
                   <div
                     className="h-2 bg-[#00A3E1] rounded-full transition-all duration-1000 ease-out"
